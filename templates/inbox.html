@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Inbox - SafeChat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-orange-50 to-yellow-100 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow p-4 flex justify-between items-center">
+    <div class="text-lg font-bold text-orange-600">SafeChat</div>
+    <div class="space-x-4">
+      <a href="/send" class="text-blue-600 hover:underline">Send</a>
+      <a href="/inbox" class="text-orange-700 font-semibold underline">Inbox</a>
+      <a href="/decrypt" class="text-purple-600 hover:underline">Decrypt</a>
+      <a href="/logout" class="text-red-600 hover:underline">Logout</a>
+    </div>
+    <div class="text-sm text-gray-600">👤 {{ session['username'] }}</div>
+  </nav>
+
+  <div class="flex flex-col items-center py-10 px-4">
+    <div class="w-full max-w-lg bg-white rounded-lg shadow-md p-8">
+      <h1 class="text-3xl font-bold text-center text-orange-700 mb-4">Your Inbox</h1>
+
+      {% if inbox %}
+        <h3 class="text-xl font-semibold text-orange-800 text-center mb-4">
+          Encrypted Messages for <em>{{ session['username'] }}</em>
+        </h3>
+        <div class="space-y-4">
+          {% for msg in inbox %}
+          <div class="bg-yellow-50 border-l-4 border-orange-500 shadow rounded p-4">
+            <p class="text-sm text-gray-700 mb-1"><strong>From:</strong> {{ msg['from'] }}</p>
+            <p class="text-sm font-medium text-gray-700 mb-2">Encrypted:</p>
+            <textarea id="enc{{ loop.index }}" readonly
+              class="w-full text-sm p-2 border border-gray-300 rounded-md bg-gray-50 font-mono resize-none mb-2"
+              rows="4">{{ msg['encrypted_message'] }}</textarea>
+            <button class="bg-orange-600 text-white px-3 py-1 rounded text-sm hover:bg-orange-700 transition"
+              onclick="copyToClipboard('enc{{ loop.index }}')">
+              Copy
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="mt-4 bg-red-50 text-red-800 p-4 rounded border border-red-300 text-center">
+          <p>No messages found for <strong>{{ session['username'] }}</strong>.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    function copyToClipboard(elementId) {
+      const copyText = document.getElementById(elementId);
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(copyText.value)
+        .then(() => alert("Encrypted message copied!"))
+        .catch(() => alert("Failed to copy!"));
+    }
+  </script>
+
+</body>
+</html>

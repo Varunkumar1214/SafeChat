@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Decrypt Message - SafeChat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-purple-100 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow p-4 flex justify-between items-center">
+    <div class="text-lg font-bold text-green-700">SafeChat</div>
+    <div class="space-x-4">
+      <a href="/send" class="text-blue-600 hover:underline">Send</a>
+      <a href="/inbox" class="text-purple-600 hover:underline">Inbox</a>
+      <a href="/decrypt" class="text-yellow-600 font-semibold underline">Decrypt</a>
+      <a href="/logout" class="text-red-600 hover:underline">Logout</a>
+    </div>
+    <div class="text-sm text-gray-600">👤 {{ session['username'] }}</div>
+  </nav>
+
+  <!-- Decrypt Form -->
+  <div class="flex justify-center items-center py-16 px-4">
+    <div class="w-full max-w-xl bg-white rounded-lg shadow-lg p-8">
+
+      <h1 class="text-3xl font-semibold text-center text-purple-700 mb-6">Decrypt Message</h1>
+
+      <form action="/decrypt" method="post" class="space-y-4">
+        <div>
+          <label class="block font-medium text-gray-700 mb-1">Encrypted Message</label>
+          <textarea name="encrypted_message" required rows="4" placeholder="Paste encrypted message here..."
+            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"></textarea>
+        </div>
+
+        <div>
+          <button type="submit"
+            class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-md font-semibold transition">
+            Decrypt
+          </button>
+        </div>
+      </form>
+
+      {% if decrypted %}
+      <div class="bg-green-100 text-green-800 mt-6 p-4 rounded-md border border-green-300">
+        <h3 class="font-semibold text-lg mb-1">Decrypted Message:</h3>
+        <p class="break-words text-sm">{{ decrypted }}</p>
+      </div>
+      {% endif %}
+
+      {% if error %}
+      <div class="bg-red-100 text-red-800 mt-6 p-4 rounded-md border border-red-300">
+        <h3 class="font-semibold text-lg mb-1">Error:</h3>
+        <p class="text-sm">{{ error }}</p>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+</body>
+</html>
